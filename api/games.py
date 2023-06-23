@@ -2,15 +2,29 @@ from flask import Flask, jsonify, request
 from flask_restful import   Resource, Api
 from pymongo import MongoClient
 from bson import ObjectId
+import os
 
 app = Flask(__name__)
 api = Api(app)
 
-# Connect to MongoDB
-client = MongoClient('mongodb://localhost:27017')
+# Use env variables to store sensitive information, such as passwords and API keys --env.txt
+
+username = os.environ.get('MONGODB_USERNAME')
+password = os.environ.get('MONGODB_PASSWORD')
+cluster_address = os.environ.get('MONGODB_CLUSTER_ADDRESS')
+database = os.environ.get('MONGODB_DATABASE')
+
+# Create the connection string using the retrieved information
+connection_string = f'mongodb+srv://{username}:{password}@{cluster_address}/{database}?retryWrites=true&w=majority'
+
+# Create a MongoClient object and connect to the MongoDB Cloud cluster
+client = MongoClient(connection_string)
+
+# Access the database and collection
 db = client['game_list']
 collection = db['games']
 
+#Create a class using the Resource class from flask_restful
 class Game(Resource):
 
     def get(self):
@@ -20,20 +34,17 @@ class Game(Resource):
 
     def post(self):
         data = request.get_json()
-        collection.insert_one(data)
+        result = collection.insert_one(data)
+        inserted_id = str(result.inserted_id)  # Convert ObjectId to string
         print(data)
         return {
-            'message':"Data Inserted Successfully"
-        }
-    
-    def delete(self):
-        data = request.get_json()
-        collection.delete_one(data)
-        return {
-            'message':"Data Deleted Successfully"
+            'message': "Data Inserted Successfully",
+            '_id': inserted_id
         }
 
+#Create another class using the Resource class from flask_restful
 class GameList(Resource):
+
     def get(self, game_id):
         try:
             data = collection.find_one({'_id': ObjectId(game_id)})
@@ -54,13 +65,12 @@ class GameList(Resource):
             return {'message': 'Invalid game ID'}, 400
         
 
-    def put(self, game_id):
-        data = request.get_json()
-        game_id = data.get('_id')
-        if game_id:
-            data['_id'] = ObjectId(game_id)
-            collection.update_one({'_id': data['_id']}, {'$set': data})
-            return {'message': "Data Updated Successfully"}
-        else:
-            return {'message': 'Invalid game ID'}, 400
-        
+    # def put(self, game_id):
+    #     data = request.get_json()
+    #     game_id = data.get('_id')
+    #     if game_id:
+    #         data['_id'] = ObjectId(game_id)
+    #         collection.update_one({'_id': data['_id']}, {'$set': data})
+    #         return {'message': "Data Updated Successfully"}
+    #     else:
+    #         return {'message': 'Invalid game ID'}, 400
