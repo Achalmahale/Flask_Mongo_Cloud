@@ -32,14 +32,10 @@ To run this Flask application locally and connect it to your own MongoDB Cloud c
 
 4. Set up the environment variables:
 
-   -Create a .env file in the root directory of the project.
-
-   -Define the following environment variables in the .env file:
+   Replace the placeholders (your_mongodb_username, your_mongodb_password, etc.) with your actual MongoDB Cloud connection detail and run on CMD
 
    ```bash
    MONGODB_USERNAME=your_mongodb_username
    MONGODB_PASSWORD=your_mongodb_password
    MONGODB_CLUSTER_ADDRESS=your_mongodb_cluster_address
    MONGODB_DATABASE=your_mongodb_database
-
-Replace the placeholders (your_mongodb_username, your_mongodb_password, etc.) with your actual MongoDB Cloud connection details.
