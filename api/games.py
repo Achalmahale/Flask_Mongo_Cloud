@@ -41,7 +41,7 @@ class Game(Resource):
             'message': "Data Inserted Successfully",
             '_id': inserted_id
         }
-
+    
 #Create another class using the Resource class from flask_restful
 class GameList(Resource):
 
@@ -56,6 +56,22 @@ class GameList(Resource):
         except (TypeError, ValueError):
             return {'message': 'Invalid game ID'}, 400
         
+    def put(self, game_id):
+        try:
+            data = request.get_json()
+            updated_data = collection.find_one_and_update(
+                {'_id': ObjectId(game_id)},
+                {'$set': data},
+                return_document=True
+            )
+            if updated_data:
+                serialized_data = {**updated_data, '_id': str(updated_data['_id'])}
+                return jsonify(serialized_data)
+            else:
+                return {'message': 'Game not found'}, 404
+        except (TypeError, ValueError):
+            return {'message': 'Invalid game ID'}, 400
+        
 
     def delete(self, game_id):
         try:
@@ -63,14 +79,3 @@ class GameList(Resource):
             return {'message': 'Game deleted successfully'}, 200
         except (TypeError, ValueError):
             return {'message': 'Invalid game ID'}, 400
-        
-
-    # def put(self, game_id):
-    #     data = request.get_json()
-    #     game_id = data.get('_id')
-    #     if game_id:
-    #         data['_id'] = ObjectId(game_id)
-    #         collection.update_one({'_id': data['_id']}, {'$set': data})
-    #         return {'message': "Data Updated Successfully"}
-    #     else:
-    #         return {'message': 'Invalid game ID'}, 400
