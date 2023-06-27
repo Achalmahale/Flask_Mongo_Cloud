@@ -66,7 +66,11 @@ Open your web browser and navigate to http://localhost:5000 to access the applic
 
   ## API Endpoints
   GET /games: Retrieve a list of all games.
+  
   GET /games/<game_id>: Retrieve details of a specific game.
+  
   POST /games: Create a new game entry.
+  
   PUT /games/<game_id>: Update the details of a game.
+  
   DELETE /games/<game_id>: Delete a game entry.
