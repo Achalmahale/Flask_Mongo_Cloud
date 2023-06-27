@@ -29,7 +29,7 @@ Before running the application, make sure you have the following installed:
 2. Change into the project directory:
    
    ```bash
-  cd Flask_Mongo_Cloud
+     cd Flask_Mongo_Cloud
 
 3. Install the required dependencies:
 
@@ -59,7 +59,7 @@ Add the following lines to the .env file and replace the values with your MongoD
 
 
    ```bash
-  python app.py
+     python app.py
 
 Open your web browser and navigate to http://localhost:5000 to access the application or use Postman
 
