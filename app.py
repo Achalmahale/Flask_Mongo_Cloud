@@ -15,11 +15,11 @@ password = os.getenv('MONGODB_PASSWORD')
 cluster_address = os.getenv('MONGODB_CLUSTER_ADDRESS')
 database = os.getenv('MONGODB_DATABASE')
 
-# connection_string = f'mongodb+srv://{username}:{password}@{cluster_address}/{database}?retryWrites=true&w=majority'
-connection_string = "mongodb+srv://achalmahale:HVTJN0JGliUuJ1uI@flask.vwnr42n.mongodb.net/?retryWrites=true&w=majority"
+connection_string = f'mongodb+srv://{username}:{password}@{database}.{cluster_address}/?retryWrites=true&w=majority'
 client = MongoClient(connection_string)
 db = client['game_list']
 collection = db['games']
+print(connection_string)
 
 #Create a class using the Resource class from flask_restful
 class Game(Resource):
